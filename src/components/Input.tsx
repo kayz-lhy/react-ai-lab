@@ -1,5 +1,5 @@
 // Input.tsx
-import React, { InputHTMLAttributes, ReactNode } from "react";
+import React, {type InputHTMLAttributes, JSX, type ReactNode} from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     /**
@@ -54,6 +54,11 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  * }
  * ```
  *
+ * @param error
+ * @param icon
+ * @param iconClassName
+ * @param wrapperClassName
+ * @param className
  * @param {InputProps} props - 输入框属性
  * @returns {JSX.Element} 一个可交互、可定制的输入框组件
  */
@@ -64,7 +69,7 @@ export const Input: React.FC<InputProps> = ({
                                          wrapperClassName = "",
                                          className = "",
                                          ...props
-                                     }) => {
+                                     }): JSX.Element => {
     return (
         <div className={`relative w-full ${wrapperClassName}`}>
             {icon && (

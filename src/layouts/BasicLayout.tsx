@@ -22,27 +22,27 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({
                                                      children,
                                                  }) => {
     return (
-        <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+        <div className="flex min-h-screen flex-col bg-gray-50 text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100">
             {/* 页头 */}
-            <header className="bg-white dark:bg-gray-800 shadow p-4 transition-colors duration-300">
+            <header className="bg-white p-4 shadow transition-colors duration-300 dark:bg-gray-800">
                 {headerContent ?? (
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 select-none">
+                    <h1 className="select-none text-2xl font-bold text-gray-900 dark:text-gray-100">
                         页面标题
                     </h1>
                 )}
             </header>
 
             {/* 主体内容区，使用 Card 包裹 */}
-            <main className="flex-grow container max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <main className="container mx-auto max-w-5xl flex-grow px-4 py-6 sm:px-6 lg:px-8">
                 <Card
                     className="mx-auto"
                     header={
-                        <div className="text-xl font-semibold text-gray-900 dark:text-gray-100 select-none">
+                        <div className="select-none text-xl font-semibold text-gray-900 dark:text-gray-100">
                             卡片头部
                         </div>
                     }
                     footer={
-                        <div className="text-sm text-gray-500 dark:text-gray-400 select-none">
+                        <div className="select-none text-sm text-gray-500 dark:text-gray-400">
                             卡片底部信息
                         </div>
                     }
@@ -52,7 +52,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({
             </main>
 
             {/* 页脚 */}
-            <footer className="bg-white dark:bg-gray-800 shadow p-4 text-center text-gray-600 dark:text-gray-400 text-sm transition-colors duration-300 select-none">
+            <footer className="select-none bg-white p-4 text-center text-sm text-gray-600 shadow transition-colors duration-300 dark:bg-gray-800 dark:text-gray-400">
                 {footerContent ?? "© 2025 你的公司名称"}
             </footer>
         </div>

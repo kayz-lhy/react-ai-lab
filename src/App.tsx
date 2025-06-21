@@ -1,12 +1,12 @@
 // App.tsx
-import { JSX, useState } from "react";
+import {type JSX, useState } from "react";
 import {Route, Routes, useLocation} from "react-router-dom";
-import { menuConfig } from "./config/menu";
+import {menuConfig, type MenuItem} from "./config/menu";
 import AdvancedLayout from "./layouts/AdvancedLayout";
 import {pageMap} from "./config/pageMap.tsx";
 
 export default function App() {
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode] = useState(false);
     function findDescription(items: MenuItem[], pathname: string): string | undefined {
         for (const item of items) {
             if (item.path === pathname) return item.description;

@@ -17,7 +17,11 @@ const SideBar: React.FC = () => {
         e.preventDefault(); // 阻止 Link 跳转
         setOpenKeys((prev) => {
             const newSet = new Set(prev);
-            newSet.has(key) ? newSet.delete(key) : newSet.add(key);
+            if (newSet.has(key)) {
+                newSet.delete(key);
+            } else {
+                newSet.add(key);
+            }
             return newSet;
         });
     };
@@ -34,6 +38,7 @@ const SideBar: React.FC = () => {
             const active = isActive(item.path);
             const hasChildren = !!item.children?.length;
             const isOpen = openKeys.has(item.key);
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const { ref, height } = useHeightTransition(isOpen && !collapsed);
             return (
                 <li key={item.key} className="relative group">
@@ -56,7 +61,7 @@ const SideBar: React.FC = () => {
                         {hasChildren && !collapsed && (
                             <span
                                 aria-label={isOpen ? "收起子菜单" : "展开子菜单"}
-                                className="ml-auto text-sm p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                                className="ml-auto rounded p-1 text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
                             >
             {isOpen ? <FaChevronDown /> : <FaChevronRight />}
         </span>
@@ -86,7 +91,7 @@ const SideBar: React.FC = () => {
                                                     : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                                             }`}
                                         >
-                                            <span className="text-sm truncate">{child.label}</span>
+                                            <span className="truncate text-sm">{child.label}</span>
                                         </Link>
                                     </li>
                                 );
@@ -99,13 +104,13 @@ const SideBar: React.FC = () => {
 
     return (
         <aside
-            className="relative bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 shadow-lg transition-[width] duration-500"
+            className="relative border-r border-gray-200 bg-white shadow-lg duration-500 transition-[width] dark:border-gray-700 dark:bg-gray-900"
             style={{ width: collapsed ? 72 : 256 }}
         >
             {/* LOGO */}
-            <div className="flex items-center justify-center h-16 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex h-16 items-center justify-center border-b border-gray-200 dark:border-gray-700">
                 <img
-                    src="/your-logo.png"
+                    src=""
                     alt="Logo"
                     className={`h-10 w-auto transition-transform duration-300 origin-center ${collapsed ? "scale-0" : "scale-100"}`}
                 />
@@ -119,7 +124,7 @@ const SideBar: React.FC = () => {
             {/* 悬浮切换按钮 */}
             <button
                 onClick={() => setCollapsed(!collapsed)}
-                className="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-1/2 bg-blue-600 text-white rounded-full p-2 shadow hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 transform rounded-full bg-blue-600 p-2 text-white shadow hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 aria-label={collapsed ? "展开侧边栏" : "收起侧边栏"}
             >
                 {collapsed ? <FaChevronRight size={14} /> : <FaChevronLeft size={14} />}

@@ -56,7 +56,7 @@ const Card: React.FC<CardProps> = ({
     const renderHeader = () => {
         if (header) return <div className="mb-4">{header}</div>;
         if (title) return (
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
                 {title}
             </h3>
         );
@@ -66,7 +66,7 @@ const Card: React.FC<CardProps> = ({
     const renderFooter = () => {
         if (!footer) return null;
         return (
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400">
+            <div className="mt-4 border-t border-gray-200 pt-4 text-gray-600 dark:border-gray-700 dark:text-gray-400">
                 {footer}
             </div>
         );
