@@ -1,5 +1,4 @@
-// Input.tsx
-import React, {type InputHTMLAttributes, JSX, type ReactNode} from "react";
+import React, { type InputHTMLAttributes, type JSX, type ReactNode } from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     /**
@@ -37,32 +36,8 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  * - 错误态红色边框和聚焦态
  * - 适配浅色与深色模式
  * - 继承所有原生输入框属性（如 value、onChange、placeholder 等）
- *
- * ### 使用示例
- * ```tsx
- * import Input from "./Input";
- * import { FaSearch } from "react-icons/fa";
- *
- * export default function SearchBar() {
- *   return (
- *     <Input
- *       placeholder="请输入关键字"
- *       icon={<FaSearch />}
- *       onChange={(e) => console.log(e.target.value)}
- *     />
- *   );
- * }
- * ```
- *
- * @param error
- * @param icon
- * @param iconClassName
- * @param wrapperClassName
- * @param className
- * @param {InputProps} props - 输入框属性
- * @returns {JSX.Element} 一个可交互、可定制的输入框组件
  */
-export const Input: React.FC<InputProps> = ({
+const Input: React.FC<InputProps> = ({
                                          error = false,
                                          icon,
                                          iconClassName = "",
@@ -74,7 +49,7 @@ export const Input: React.FC<InputProps> = ({
         <div className={`relative w-full ${wrapperClassName}`}>
             {icon && (
                 <span
-                    className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 dark:text-gray-500 ${iconClassName}`}
+                    className={`absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 ${iconClassName}`}
                 >
           {icon}
         </span>
@@ -82,14 +57,14 @@ export const Input: React.FC<InputProps> = ({
 
             <input
                 className={[
-                    "w-full border rounded",
-                    "focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition",
+                    "w-full border rounded-md",
+                    "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all",
                     "bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-500",
                     error
                         ? "border-red-500 focus:ring-red-400 focus:border-red-500"
                         : "border-gray-300",
                     icon ? "pl-9" : "pl-3",
-                    "pr-3 py-2",
+                    "pr-3 py-2 text-sm",
                     className,
                 ].join(" ")}
                 {...props}

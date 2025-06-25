@@ -4,12 +4,11 @@ import React, { type ReactNode } from "react";
 export interface CardProps {
     /**
      * 卡片头部内容，可以是字符串或者自定义 React 节点。
-     * 如果传入字符串，会作为标题显示，优先于 title 属性。
+     * 优先显示 header。
      */
     header?: ReactNode;
     /**
-     * 兼容旧属性，作为简单标题使用，
-     * 如果 header 存在，则忽略 title。
+     * 卡片标题（当 header 没有传时显示）。
      */
     title?: string;
     /**
@@ -27,24 +26,15 @@ export interface CardProps {
 }
 
 /**
- * 三段式 Card 组件
+ * 卡片组件
  *
- * 支持头部、主体和底部三个区域，满足不同布局需求。
- * 适配深色模式与浅色模式，带圆角、阴影和边框。
+ * 三段式布局：头部、主体、底部。
+ * 使用 surface 和 text 颜色，自动适配暗色与亮色模式。
  *
- * ### 使用示例
- * ```tsx
- * <Card
- *   header={<div className="text-xl font-bold">标题区域</div>}
- *   footer={<div className="text-sm text-gray-500">底部说明</div>}
- * >
- *   <p>主体内容区域</p>
+ * @example
+ * <Card title="我的卡片">
+ *   <p>这是卡片内容</p>
  * </Card>
- *
- * <Card title="简单标题">
- *   <p>只传标题和主体内容</p>
- * </Card>
- * ```
  */
 const Card: React.FC<CardProps> = ({
                                        header,
@@ -53,33 +43,40 @@ const Card: React.FC<CardProps> = ({
                                        footer,
                                        className = "",
                                    }) => {
-    const renderHeader = () => {
-        if (header) return <div className="mb-4">{header}</div>;
-        if (title) return (
-            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-                {title}
-            </h3>
-        );
-        return null;
-    };
-
-    const renderFooter = () => {
-        if (!footer) return null;
-        return (
-            <div className="mt-4 border-t border-gray-200 pt-4 text-gray-600 dark:border-gray-700 dark:text-gray-400">
-                {footer}
-            </div>
-        );
-    };
-
     return (
         <div
-            className={`bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
-      rounded-lg shadow p-4 ${className}`}
+            className={`
+        bg-surface dark:bg-surface-dark
+        rounded-lg
+        border border-gray-200 dark:border-gray-700
+        shadow-sm hover:shadow-md transition-shadow
+        overflow-hidden
+        ${className}    
+      `}
         >
-            {renderHeader()}
-            <div className="text-gray-700 dark:text-gray-300">{children}</div>
-            {renderFooter()}
+            {(header || title) && (
+                <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                    {header ? (
+                        <div className="text-lg font-semibold text-text dark:text-text-dark">
+                            {header}
+                        </div>
+                    ) : (
+                        <h3 className="text-lg font-semibold text-text dark:text-text-dark">
+                            {title}
+                        </h3>
+                    )}
+                </div>
+            )}
+
+            <div className="px-4 py-4 text-text dark:text-text-dark">
+                {children}
+            </div>
+
+            {footer && (
+                <div className="px-4 py-3 border-t border-gray-100 dark:border-gray-700 text-sm text-subtle dark:text-subtleDark">
+                    {footer}
+                </div>
+            )}
         </div>
     );
 };

@@ -1,2 +1,41 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* 在 src/index.css 中添加 */
+html ::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+html ::-webkit-scrollbar-track {
+    background: rgba(241, 241, 241, 0) !important;
+    border-radius: 4px !important;
+}
+
+html ::-webkit-scrollbar-thumb {
+    background: #c1c1c1 !important;
+    border-radius: 4px !important;
+}
+
+html ::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8 !important;
+}
+
+/* Firefox */
+html * {
+    scrollbar-width: thin !important;
+    scrollbar-color: #c1c1c1 #f1f1f1 !important;
+}
+
+.alert-base {
+    @apply p-4 rounded-lg border flex items-start gap-3 relative;
+}
+
+.alert-custom {
+    @apply  bg-purple-100 border-purple-300 text-purple-900;
+}
+
+.alert-neon {
+    @apply  bg-black border-cyan-400 text-cyan-400 shadow-lg;
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+}

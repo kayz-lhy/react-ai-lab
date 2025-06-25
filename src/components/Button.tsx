@@ -1,29 +1,9 @@
-// src/components/Button.tsx
-import React from "react";
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import React, { type ButtonHTMLAttributes, type ReactNode } from "react";
 import clsx from "clsx";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    /**
-     * 按钮显示的内容，可以是文字、图标或其它 React 节点。
-     */
     children: ReactNode;
-
-    /**
-     * 按钮外观样式：
-     * - "primary": 主要按钮，蓝色背景
-     * - "default": 默认按钮，浅色背景和边框
-     * - "danger": 危险按钮，红色背景
-     * - "text": 文字按钮，无边框透明背景
-     */
-    variant?: "primary" | "default" | "danger" | "text";
-
-    /**
-     * 按钮尺寸：
-     * - "small": 较小按钮
-     * - "medium": 中等大小按钮（默认）
-     * - "large": 较大按钮
-     */
+    variant?: "primary" | "default" | "danger" | "text" | "outline";
     size?: "small" | "medium" | "large";
 }
 
@@ -33,58 +13,67 @@ const sizeStyles = {
     large: "px-6 py-3 text-lg",
 };
 
-const variants = {
-    primary:
-        "bg-blue-600 text-white border border-transparent hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-400",
-    default:
-        "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-blue-400",
-    danger:
-        "bg-red-600 text-white border border-transparent hover:bg-red-700 focus:ring-2 focus:ring-red-500 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-400",
-    text:
-        "bg-transparent text-blue-600 hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 dark:text-blue-400 dark:hover:bg-blue-900 dark:focus:ring-blue-400",
+const variantColors = {
+    primary: {
+        base: "bg-blue-600 text-white border border-transparent",
+        hover: "hover:bg-blue-700",
+        focus: "focus:ring-2 focus:ring-blue-500 focus:ring-offset-1",
+        disabled: "disabled:bg-blue-400 disabled:cursor-not-allowed",
+    },
+    default: {
+        base: "bg-white text-gray-800 border border-gray-300 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600",
+        hover: "hover:bg-gray-100 dark:hover:bg-slate-600",
+        focus: "focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800",
+        disabled: "disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed dark:disabled:bg-slate-800 dark:disabled:text-slate-500",
+    },
+    outline: {
+        base: "bg-transparent text-gray-700 border border-gray-300 dark:text-slate-300 dark:border-slate-600",
+        hover: "hover:bg-gray-50 hover:border-gray-400 dark:hover:bg-slate-700 dark:hover:border-slate-500",
+        focus: "focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800",
+        disabled: "disabled:bg-transparent disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed dark:disabled:text-slate-500 dark:disabled:border-slate-700",
+    },
+    danger: {
+        base: "bg-red-600 text-white border border-transparent",
+        hover: "hover:bg-red-700",
+        focus: "focus:ring-2 focus:ring-red-500 focus:ring-offset-1",
+        disabled: "disabled:bg-red-400 disabled:cursor-not-allowed",
+    },
+    text: {
+        base: "bg-transparent text-blue-600 border border-transparent dark:text-blue-400",
+        hover: "hover:bg-blue-50 dark:hover:bg-blue-900/20",
+        focus: "focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800",
+        disabled: "disabled:text-blue-400 disabled:cursor-not-allowed dark:disabled:text-blue-600",
+    },
 };
 
-const disabledStyles = "opacity-50 cursor-not-allowed";
-
-/**
- * 通用按钮组件，支持四种不同外观以及三种尺寸。
- * 自动适配亮色与暗色模式，支持传入原生按钮属性。
- *
- * @example
- * ```tsx
- * <Button variant="primary" size="large" onClick={() => alert('clicked')}>
- *   确认
- * </Button>
- * ```
- *
- * @param {ReactNode} children - 按钮内部显示的内容，可以是文字、图标或其他节点。
- * @param {"primary"|"default"|"danger"|"text"} [variant="default"] - 按钮外观：
- *   - "primary": 主要按钮（蓝色背景，白色文字）。
- *   - "default": 默认按钮（浅色背景，边框灰色）。
- *   - "danger": 危险按钮（红色背景，白色文字）。
- *   - "text": 文字按钮（无边框透明背景，蓝色文字）。
- * @param {"small"|"medium"|"large"} [size="medium"] - 按钮尺寸：
- *   - "small": 较小按钮，适合紧凑场景。
- *   - "medium": 中等按钮，适合通用场景。
- *   - "large": 大按钮，文字和内边距更大。
- * @param {boolean} [disabled=false] - 是否禁用按钮，禁用时按钮半透明且不可点击。
- * @param {ButtonHTMLAttributes<HTMLButtonElement>} [props] - 其他原生按钮属性，如 onClick、type 等。
- */
 const Button: React.FC<ButtonProps> = ({
                                            children,
                                            variant = "default",
                                            size = "medium",
-                                           disabled,
+                                           className = "",
+                                           disabled = false,
                                            ...props
                                        }) => {
+    const colors = variantColors[variant];
+
     return (
         <button
+            type="button"
             disabled={disabled}
             className={clsx(
-                "m-1 rounded transition duration-200 ease-in-out focus:outline-none focus:ring-offset-0",
+                // 基础样式
+                "rounded-lg font-medium shadow-sm transition-all duration-200 focus:outline-none",
+                "inline-flex items-center justify-center",
+                "transform active:scale-95",
+                // 尺寸样式
                 sizeStyles[size],
-                variants[variant],
-                disabled && disabledStyles
+                // 颜色和状态样式
+                colors.base,
+                !disabled && colors.hover,
+                !disabled && colors.focus,
+                colors.disabled,
+                // 自定义类名
+                className
             )}
             {...props}
         >

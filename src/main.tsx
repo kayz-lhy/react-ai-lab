@@ -3,9 +3,10 @@ import {createRoot} from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import {BrowserRouter} from "react-router-dom";
-
+import {initCustomAlert} from "./utils/initAlert.ts";
+initCustomAlert();
 createRoot(document.getElementById('root')!).render(
-    <StrictMode>
+    <StrictMode >
         <BrowserRouter><App/></BrowserRouter>
     </StrictMode>,
 )
